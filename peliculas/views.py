@@ -7,6 +7,7 @@ from .models import Pelicula
 
 
 def lista_peliculas(request):
+    print("Hola")
     hay_busqueda = False
     pelicula_buscada = request.GET.get("pelicula_buscada")
     print("Buscando:", pelicula_buscada)
