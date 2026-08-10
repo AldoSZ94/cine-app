@@ -1,0 +1,46 @@
+{% extends "peliculas/base.html" %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+    <div class="mx-auto flex w-9/10 max-w-md grow place-items-center">
+        <main class="flex w-full flex-col justify-center rounded-2xl border border-slate-700 bg-slate-900 px-8 py-12 shadow-xl">
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl font-bold text-white">Crear cuenta</h1>
+                <p class="mt-2 text-sm text-slate-400">Regístrate para continuar</p>
+            </div>
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                <!-- Usuario -->
+                <div>
+                    <label for="{{ form.username.id_for_label }}"
+                           class="mb-2 block text-sm font-medium text-slate-300">Nombre de usuario</label>
+                    {{ form.username }}
+                    {% for error in form.username.errors %}
+                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <!-- Contraseña -->
+                <div>
+                    <label for="{{ form.password1.id_for_label }}"
+                           class="mb-2 block text-sm font-medium text-slate-300">Contraseña</label>
+                    {{ form.password1 }}
+                    {% for error in form.password1.errors %}
+                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <!-- Confirmación de contraseña -->
+                <div>
+                    <label for="{{ form.password2.id_for_label }}"
+                           class="mb-2 block text-sm font-medium text-slate-300">Confirmar contraseña</label>
+                    {{ form.password2 }}
+                    {% for error in form.password2.errors %}
+                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <button type="submit"
+                        class="w-full cursor-pointer rounded-xl bg-indigo-600 px-5 py-3 font-bold text-white transition hover:brightness-125">
+                    Registrarse
+                </button>
+            </form>
+        </main>
+    </div>
+{% endblock %}

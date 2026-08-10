@@ -1,0 +1,47 @@
+{% extends "peliculas/base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+    <div class="mx-auto flex w-9/10 max-w-md grow items-center justify-center py-12">
+        <main class="w-full rounded-2xl border border-slate-800 bg-slate-800/40 p-8 shadow-xl">
+            <!-- Emcabezado Form -->
+            <div class="mb-8 flex flex-col gap-2">
+                <span class="text-sm font-semibold tracking-widest text-indigo-400 uppercase">CineApp</span>
+                <h1 class="text-3xl font-bold tracking-tight text-white">Iniciar sesión</h1>
+                <p class="text-sm text-slate-400">Ingresa tus credenciales para continuar.</p>
+            </div>
+            <!-- Form -->
+            <form method="post" class="flex flex-col gap-6">
+                {% csrf_token %}
+                <!-- Usuario -->
+                <div class="flex flex-col gap-2">
+                    <label for="username" class="text-sm font-semibold text-slate-300">Usuario</label>
+                    <input id="username"
+                           name="username"
+                           type="text"
+                           required
+                           class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-slate-200 transition outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                           placeholder="Nombre de usuario" />
+                </div>
+                <!-- Contraseña -->
+                <div class="flex flex-col gap-2">
+                    <label for="password" class="text-sm font-semibold text-slate-300">Contraseña</label>
+                    <input id="password"
+                           name="password"
+                           type="password"
+                           required
+                           class="w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-slate-200 transition outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                           placeholder="Contraseña" />
+                </div>
+                <button type="submit"
+                        class="cursor-pointer rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-500">
+                    Iniciar sesión
+                </button>
+                <p class="text-center text-sm text-slate-400">
+                    ¿No tienes una cuenta?
+                    <a href="{% url 'usuarios:registro_usuario' %}"
+                       class="font-semibold text-indigo-400 transition hover:text-indigo-300">Regístrate</a>
+                </p>
+            </form>
+        </main>
+    </div>
+{% endblock %}

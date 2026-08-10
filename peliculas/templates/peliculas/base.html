@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+          content="Aplicación de catálogo y gestión de películas" />
+    <title>{% block title %}CineApp{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'peliculas/css/output.css' %}" />
+  </head>
+  <body class="flex min-h-screen flex-col bg-slate-900 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+    <!-- Header -->
+    <header class="sticky py-6 top-0 z-50 flex min-h-20 items-center border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+      <div class="mx-auto flex flex-col sm:flex-row w-9/10 max-w-300 items-center gap-6 justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2">
+          <h1 class="text-2xl font-black tracking-tight text-indigo-500 transition hover:text-indigo-400">🎬 CineApp</h1>
+        </a>
+        <!-- Navegación -->
+        <nav class="flex flex-col items-center gap-2 sm:flex-row sm:gap-6">
+          {% if user.is_authenticated %}
+            <!-- Logout -->
+            <a href="{% url 'usuarios:logout' %}"
+               class="text-sm font-semibold text-slate-300 transition hover:text-white">Logout</a>
+          {% else %}
+            <!-- Registro -->
+            <a href="{% url 'usuarios:registro_usuario' %}"
+               class="text-sm font-semibold text-slate-300 transition hover:text-white">Registro</a>
+            <!-- Login -->
+            <a href="{% url 'usuarios:login' %}"
+               class="text-sm font-semibold text-slate-300 transition hover:text-white">Login</a>
+          {% endif %}
+          <!-- Agregar película -->
+          <a href="{% url 'peliculas:agregar_pelicula' %}"
+             class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500">
+            <span class="text-lg leading-none">+</span>
+            <span>Agregar Película</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+    <!-- Muestra mensajes de Django al usuario -->
+    {% if messages %}
+      <div class="mx-auto w-9/10 max-w-300 pt-6">
+        {% for message in messages %}
+          <div class=" rounded-lg px-4 py-3 {% if message.tags == 'success' %} border border-green-500/30 bg-green-500/10 text-green-400 {% elif message.tags == 'error' %} border border-red-500/30 bg-red-500/10 text-red-400 {% elif message.tags == 'warning' %} border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 {% elif message.tags == 'info' %} border border-blue-500/30 bg-blue-500/10 text-blue-400 {% endif %} ">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <!-- Main -->
+    {% block content %}{% endblock %}
+    <!-- Footer -->
+    <footer class="flex min-h-20 items-center border-t border-slate-800/80 bg-slate-950/80">
+      <div class="mx-auto w-9/10 max-w-300 text-center text-sm font-medium text-slate-400">
+        <p>© Aldo Sandoval Zepeda. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </body>
+</html>

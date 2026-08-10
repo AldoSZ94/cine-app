@@ -1,0 +1,83 @@
+{% extends "peliculas/base.html" %}
+{% block title %}{{ pelicula.titulo }}{% endblock title %}
+{% block content %}
+    <div class="mx-auto flex w-9/10 max-w-300 grow flex-col gap-8 py-6">
+        <!-- Navegación -->
+        <div class="flex flex-col items-center justify-between gap-3 min-[480px]:flex-row sm:flex-row">
+            <a href="{% url 'peliculas:lista_peliculas' %}"
+               class="text-sm font-semibold text-indigo-400 transition hover:text-indigo-300">← Regresar al listado</a>
+            <div class="flex gap-2">
+                <a href="{% url 'peliculas:editar_pelicula' pelicula.id %}"
+                   class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500">
+                    Editar película
+                </a>
+                <a href="{% url 'peliculas:eliminar_pelicula' pelicula.id %}"
+                   class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500">
+                    Eliminar película
+                </a>
+            </div>
+        </div>
+        <!-- Contenido principal -->
+        <main class="grid gap-8 lg:grid-cols-[2fr_3fr]">
+            <!-- Imagen -->
+            <div class="group flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-xl shadow-slate-950/30">
+                {% if pelicula.imagen %}
+                    <img class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                         src="{{ pelicula.imagen.url }}"
+                         alt="{{ pelicula.titulo }}" />
+                {% else %}
+                    <div class="flex flex-col items-center gap-3 text-slate-500">
+                        <span class="text-6xl">🎬</span>
+                        <span class="text-sm font-medium text-slate-400">Sin imagen</span>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Información -->
+            <div class="flex flex-col justify-center gap-6">
+                <!-- Título -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-sm font-semibold tracking-widest text-indigo-400 uppercase">Película</span>
+                    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">{{ pelicula.titulo }}</h1>
+                </div>
+                <!-- Información resumida -->
+                <div class="flex flex-wrap gap-2">
+                    <span class="rounded-md border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-sm font-bold text-indigo-400">
+                        {{ pelicula.fecha_estreno|date:"Y" }}
+                    </span>
+                    <span class="rounded-md border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm font-semibold text-slate-300">
+                        {{ pelicula.clasificacion }}
+                    </span>
+                    <span class="rounded-md border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm font-semibold text-slate-300">
+                        {{ pelicula.get_genero_display }}
+                    </span>
+                    <span class="rounded-md border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm font-semibold text-slate-300">
+                        {{ pelicula.duracion }} min
+                    </span>
+                </div>
+                <!-- Director -->
+                <div class="border-y border-slate-800 py-5">
+                    <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Director</p>
+                    <p class="mt-1 text-lg font-semibold text-slate-200">{{ pelicula.director }}</p>
+                </div>
+                <!-- Sinópsis -->
+                <div class="flex flex-col gap-2">
+                    <h2 class="text-lg font-bold text-white">Sinópsis</h2>
+                    <p class="leading-7 text-slate-400">{{ pelicula.sinopsis }}</p>
+                </div>
+                <!-- Fecha de estreno -->
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Fecha de estreno</span>
+                    <span class="font-medium text-slate-300">{{ pelicula.fecha_estreno|date:"d \d\e F \d\e Y" }}</span>
+                </div>
+            </div>
+        </main>
+        <!-- Información del registro -->
+        <div class="border-t border-slate-800 pt-5">
+            <div class="flex flex-col gap-1 text-xs text-slate-500 sm:flex-row sm:justify-between">
+                <span>Registro creado: {{ pelicula.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                <span>Última actualización: {{ pelicula.fecha_actualizacion|date:"d/m/Y H:i"
+                }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,109 @@
+{% extends "peliculas/base.html" %}
+{% block title %}Listado de películas{% endblock title %}
+{% block content %}
+  <main class="mx-auto flex w-9/10 max-w-300 grow flex-col gap-8 py-6">
+    <!-- Encabezado Main -->
+    <header>
+      <h1 class="mt-2 text-4xl font-black tracking-tight text-white">Nuestro catálogo</h1>
+      <p class="mt-3 text-lg text-slate-400">
+        Explora nuestra colección de películas y descubre tu próxima historia
+        favorita.
+      </p>
+    </header>
+    <!-- Formulario de búsqueda -->
+    <form class="flex w-full gap-6 overflow-hidden rounded-xl border border-slate-800 bg-slate-800/50 shadow-lg shadow-slate-950/20 transition focus-within:border-indigo-500/80"
+          method="get">
+      <input class="min-w-0 flex-1 bg-transparent px-5 py-3 placeholder-slate-400 focus:outline-none"
+             name="pelicula_buscada"
+             type="text"
+             placeholder="Buscar por título" />
+      <button class="shrink-0 cursor-pointer bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-500"
+              type="submit">Buscar</button>
+    </form>
+    <section class="flex flex-col gap-6">
+      <!-- Enlace p/regresar a la lista de películas -->
+      {% if hay_busqueda %}
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <span class="text-sm text-slate-400">Resultados de búsqueda</span>
+          <a href="{% url 'peliculas:lista_peliculas' %}"
+             class="text-sm font-semibold text-indigo-400 transition hover:text-indigo-300">← Regresar al listado</a>
+        </div>
+      {% endif %}
+      <!-- Grid de Películas -->
+      <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for pelicula in page_obj %}
+          <article class="group rounded-2xl border border-slate-800 bg-slate-800/40 p-5 shadow-xl transition hover:border-slate-700 hover:bg-slate-800/80">
+            <div class="flex flex-col gap-6">
+              <!-- Imagen -->
+              <div class="flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-xl border border-slate-700/50 bg-slate-900">
+                {% if pelicula.imagen %}
+                  <img class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                       src="{{ pelicula.imagen.url }}"
+                       alt="{{ pelicula.titulo }}" />
+                {% else %}
+                  <div class="flex flex-col items-center gap-2 text-slate-500">
+                    <span class="text-4xl">🎬</span>
+                    <span class="text-xs font-medium text-slate-400">Sin imagen</span>
+                  </div>
+                {% endif %}
+              </div>
+              <!-- Información -->
+              <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold text-white transition group-hover:text-indigo-400">{{ pelicula.titulo }}</h3>
+                <div class="flex items-center gap-2">
+                  <span class="shrink-0 rounded-md border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 font-bold text-indigo-400">
+                    {{ pelicula.fecha_estreno|date:"Y" }}
+                  </span>
+                  <p class="truncate text-slate-400">{{ pelicula.sinopsis }}</p>
+                </div>
+              </div>
+              <!-- Botón -->
+              <a href="{% url 'peliculas:detalle_pelicula' pelicula.id %}"
+                 class="rounded-lg bg-slate-700/60 py-3 text-center text-sm font-semibold text-slate-200 shadow-md transition-all hover:bg-indigo-600 hover:text-white">
+                Ver detalles
+              </a>
+            </div>
+          </article>
+        {% empty %}
+          <div class="col-span-full flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-800 bg-slate-800/20 py-16 text-center">
+            <span class="text-5xl">🔍</span>
+            <h3 class="text-xl font-bold text-slate-200">No hay películas disponibles</h3>
+            <a class="text-sm font-medium text-indigo-400 transition hover:text-indigo-300"
+               href="#">Agrega una nueva película al catálogo</a>
+          </div>
+        {% endfor %}
+      </section>
+    </section>
+    {% if page_obj.paginator.num_pages > 1 %}
+      <!-- Navegación Paginator -->
+      <nav class="flex flex-wrap items-center justify-center gap-2 pt-4"
+           aria-label="Paginación">
+        {% if page_obj.has_previous %}
+          <a href="?page=1"
+             class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:bg-slate-700 hover:text-white">Inicio
+          </a>
+          <a href="?page={{ page_obj.previous_page_number }}"
+             class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:bg-slate-700 hover:text-white">
+            ← Atrás
+          </a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          <a href="?page={{ num }}"
+             class=" rounded-lg border px-3 py-2 text-sm font-semibold transition {% if num == page_obj.number %} border-indigo-500 bg-indigo-600 text-white {% else %} border-slate-700 bg-slate-800/60 text-slate-300 hover:border-slate-600 hover:bg-slate-700 hover:text-white {% endif %} ">
+            {{ num }}
+          </a>
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}"
+             class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:bg-slate-700 hover:text-white">
+            Siguiente →
+          </a>
+          <a href="?page={{ page_obj.paginator.num_pages }}"
+             class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:bg-slate-700 hover:text-white">
+            Final
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  </main>
+{% endblock %}

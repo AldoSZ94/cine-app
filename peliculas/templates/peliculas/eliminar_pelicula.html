@@ -1,0 +1,33 @@
+{% extends "peliculas/base.html" %}
+{% block title %}Eliminar Película{% endblock %}
+{% block content %}
+    <div class="mx-auto flex w-9/10 max-w-300 grow items-center justify-center py-12">
+        <div class="w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900/60 p-8 text-center shadow-xl shadow-slate-950/30">
+            <!-- Ícono -->
+            <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10 text-3xl">🗑️</div>
+            <!-- Título -->
+            <div class="flex flex-col gap-2">
+                <span class="text-sm font-semibold tracking-widest text-red-400 uppercase">Acción irreversible</span>
+                <h1 class="text-2xl font-bold tracking-tight text-white">¿Eliminar película?</h1>
+                <p class="text-sm leading-6 text-slate-400">
+                    Estás a punto de eliminar
+                    <span class="font-semibold text-slate-200">{{ pelicula.titulo }}</span>
+                    del catálogo. Esta acción no se puede deshacer.
+                </p>
+            </div>
+            <!-- Botones -->
+            <form method="post"
+                  class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                {% csrf_token %}
+                <a href="{% url 'peliculas:detalle_pelicula' pelicula.id %}"
+                   class="rounded-lg bg-slate-700/60 px-6 py-3 text-sm font-semibold text-slate-300 shadow-md transition-all hover:bg-slate-700 hover:text-white">
+                    Cancelar
+                </a>
+                <button type="submit"
+                        class="cursor-pointer rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-red-500">
+                    Eliminar película
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

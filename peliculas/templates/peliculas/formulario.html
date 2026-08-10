@@ -1,0 +1,80 @@
+{% extends "peliculas/base.html" %}
+{% block title %}{{ datos.titulo }}{% endblock %}
+{% block content %}
+    <main class="mx-auto flex w-9/10 max-w-200 grow flex-col justify-center py-8">
+        <div class="rounded-2xl border border-slate-800 bg-slate-800/40 p-6 shadow-xl shadow-slate-950/20 sm:p-8">
+            <!-- Encabezado -->
+            <div class="mb-8 flex flex-col gap-2 border-b border-slate-800 pb-6">
+                <span class="text-sm font-semibold tracking-widest text-indigo-400 uppercase">Catálogo</span>
+                <h1 class="text-3xl font-bold tracking-tight text-white">{{ datos.titulo }}</h1>
+                <p class="text-sm text-slate-400">{{ datos.subtitulo }}</p>
+            </div>
+            <form class="flex flex-col gap-6"
+                  method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Título -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.titulo.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.titulo.label }}</label>
+                    {{ form.titulo }}
+                </div>
+                <!-- Director -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.director.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.director.label }}</label>
+                    {{ form.director }}
+                </div>
+                <!-- Sinopsis -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.sinopsis.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.sinopsis.label }}</label>
+                    {{ form.sinopsis }}
+                </div>
+                <!-- Duración -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.duracion.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.duracion.label }}</label>
+                    {{ form.duracion }}
+                </div>
+                <!-- Clasificación y género -->
+                <div class="grid gap-6 sm:grid-cols-2">
+                    <div class="flex flex-col gap-2">
+                        <label for="{{ form.clasificacion.id_for_label }}"
+                               class="text-sm font-semibold text-slate-300">{{ form.clasificacion.label }}</label>
+                        {{ form.clasificacion }}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="{{ form.genero.id_for_label }}"
+                               class="text-sm font-semibold text-slate-300">{{ form.genero.label }}</label>
+                        {{ form.genero }}
+                    </div>
+                </div>
+                <!-- Fecha de estreno -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.fecha_estreno.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.fecha_estreno.label }}</label>
+                    {{ form.fecha_estreno }}
+                </div>
+                <!-- Imagen -->
+                <div class="flex flex-col gap-2">
+                    <label for="{{ form.imagen.id_for_label }}"
+                           class="text-sm font-semibold text-slate-300">{{ form.imagen.label }}</label>
+                    {{ form.imagen }}
+                    <p class="text-xs text-slate-500">Selecciona una imagen para utilizarla como póster.</p>
+                </div>
+                <!-- Botones -->
+                <div class="flex flex-col gap-3 border-t border-slate-800 pt-6 sm:flex-row sm:justify-end">
+                    <a href="{% url 'peliculas:lista_peliculas' %}"
+                       class="rounded-lg bg-slate-700/60 px-6 py-3 text-center text-sm font-semibold text-slate-300 shadow-md transition-all hover:bg-slate-700 hover:text-white">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="cursor-pointer rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-indigo-500">
+                        Guardar película
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
