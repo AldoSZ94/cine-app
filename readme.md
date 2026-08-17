@@ -2,61 +2,87 @@
 
 **Cine** es una aplicación web desarrollada con Django que funciona como un catálogo interactivo de películas. El objetivo principal del proyecto es ofrecer una interfaz limpia, intuitiva y visual donde los usuarios puedan explorar una colección cinematográfica, consultar detalles relevantes de cada título y gestionar el contenido de forma organizada.
 
----
+## 🌐 Demo
 
-## 💡 Concepto y Funcionalidad del Proyecto
+[Visitar CineApp](https://cine-app-qpzy.onrender.com)
 
-La aplicación resuelve la necesidad de centralizar y presentar un catálogo de películas con sus respectivos datos informativos e imágenes de portada (pósters).
+## 🛠️ Tecnologías
 
-### Funcionalidades clave:
+- **Backend:** Python / Django.
+- **Frontend:** HTML5, CSS3, Tailwind CSS, JavaScript.
 
-- **Exploración visual:** Galería con tarjetas que presentan los pósters y datos principales de cada película.
-- **Ficha técnica individual:** Vista de detalle por película que incluye sinopsis completa, categoría/género, año de estreno y duración.
-- **Gestión dinámica de imágenes:** Manejo de archivos multimedia (`MEDIA`) para cargar y mostrar los pósters de forma nativa desde la base de datos.
-- **Control de estado vacío (Empty State):** Mensajes interactivos y sugerencias cuando el catálogo no contiene películas registradas.
-- **Panel de administración:** Integración con el sistema de administración de Django para crear, editar o eliminar películas de manera rápida y segura.
+## ✨ Funcionalidades principales
 
----
+### 👤 Autenticación de usuarios
 
-## 🖥️ Descripción de las Vistas y Navegación
+- Registro de nuevos usuarios.
+- Inicio y cierre de sesión.
+- Inicio de sesión automático después del registro.
+- Validaciones de contraseña mediante `UserCreationForm`.
+- Acceso protegido a las operaciones del catálogo.
+- Cada usuario administra únicamente sus propias películas.
 
-El flujo de navegación de la aplicación está diseñado en torno a tres experiencias principales:
+### 🎬 Gestión de películas
 
-### 1. Vista Principal (Catálogo / Listado)
+- Crear nuevas películas.
+- Consultar información detallada.
+- Editar películas existentes.
+- Eliminar películas mediante una pantalla de confirmación.
+- Registro de fecha de creación y última actualización.
+- Clasificación por edad y género.
+- Carga opcional de imágenes.
 
-Es la página de aterrizaje de la aplicación.
+### 🔎 Búsqueda y paginación
 
-- **Propósito:** Mostrar todas las películas disponibles en el catálogo en una cuadrícula responsiva.
-- **Elementos en pantalla:**
-  - Tarjetas informativas con el póster, título, categoría y año de cada producción.
-  - Efectos visuales de interacción (_hover_) en las imágenes y enlaces para invitar a la navegación.
-  - Cláusula de estado vacío (_empty state_) con un mensaje amistoso si la base de datos no contiene registros.
+- Búsqueda de películas por título.
+- Resultados filtrados según el usuario autenticado.
+- Paginación del catálogo con **3 películas por página**.
 
-### 2. Vista de Detalle de Película
+### 🎨 Interfaz
 
-Página dedicada a mostrar la información completa de una película seleccionada.
+- Diseño responsive.
+- Tema oscuro.
+- Interfaz construida con Tailwind CSS.
+- Formularios personalizados.
+- Estados `hover` y `focus`.
+- Transiciones y efectos visuales.
+- Mensajes de éxito, error, advertencia e información mediante el sistema de mensajes de Django.
 
-- **Propósito:** Brindar la ficha técnica y la sinopsis del título.
-- **Elementos en pantalla:**
-  - Póster en mayor resolución.
-  - Metadatos destacados (Año de lanzamiento, Género/Categoría, Duración).
-  - Sinopsis o descripción argumental detallada.
-  - Botón de retorno al catálogo principal.
+### 💬 Mensajes dinámicos
 
-### 3. Panel de Administración (Gestión de Contenido)
+Los mensajes generados por Django cuentan con un pequeño comportamiento adicional mediante **JavaScript vanilla**:
 
-Interfaz reservada para la administración del sistema.
+1. Aparecen progresivamente.
+2. Permanecen visibles durante unos segundos.
+3. Desaparecen mediante una transición.
+4. Finalmente son eliminados del DOM.
 
-- **Propósito:** Administrar la base de datos del catálogo sin necesidad de modificar código.
-- **Acciones disponibles:**
-  - Alta de nuevas películas con subida de imágenes/pósters.
-  - Modificación de metadatos existentes.
-  - Eliminación de registros.
+## 📚 Lo que aprendí
 
----
+Con este proyecto practiqué y reforcé conceptos como:
 
-## 🛠️ Tecnologías y Estilos
+- Creación de modelos y relaciones mediante `ForeignKey`.
+- Uso del sistema de autenticación integrado de Django.
+- `ModelForm` y personalización de widgets.
+- Operaciones CRUD.
+- Protección de vistas mediante `login_required`.
+- Filtrado de información según el usuario autenticado.
+- Búsqueda con `icontains`.
+- Paginación mediante `Paginator`.
+- Manejo de archivos e imágenes con `ImageField` y Pillow.
+- Sistema de mensajes de Django.
+- Herencia de plantillas mediante `{% extends %}` y `{% block %}`.
+- Manejo de archivos estáticos y multimedia.
+- Integración de Tailwind CSS con Django.
+- JavaScript para mejorar la experiencia de usuario.
+- Preparación de una aplicación Django para despliegue.
 
-- **Backend:** Python / Django (Views basadas en funciones, ORM de Django, gestión de archivos `MEDIA`).
-- **Frontend:** HTML5 semántico, CSS3 y **Tailwind CSS** para un diseño moderno, fluido y adaptable a dispositivos móviles.
-- **Base de Datos:** SQLite.
+## 🎯 Objetivo del proyecto
+
+El proyecto fue creado como una práctica para llevar los conocimientos de Django más allá de ejemplos básicos, construyendo una aplicación con **autenticación, persistencia de datos, CRUD, búsqueda, paginación, carga de imágenes y despliegue**.
+
+## 👨‍💻 Autor
+
+**Aldo Sandoval Zepeda**
+
+Proyecto desarrollado como parte de mi aprendizaje y práctica en desarrollo web con Python y Django.
