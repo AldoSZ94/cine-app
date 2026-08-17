@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Pelicula(models.Model):
@@ -32,6 +33,9 @@ class Pelicula(models.Model):
 
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="peliculas"
+    )
 
     def __str__(self):
         return self.titulo

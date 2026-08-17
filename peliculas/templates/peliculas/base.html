@@ -22,14 +22,14 @@
           {% if user.is_authenticated %}
             <!-- Logout -->
             <a href="{% url 'usuarios:logout' %}"
-               class="text-sm font-semibold text-slate-300 transition hover:text-white">Logout</a>
+               class="text-sm font-semibold text-slate-300 transition hover:text-white">Cerrar sesión</a>
           {% else %}
             <!-- Registro -->
             <a href="{% url 'usuarios:registro_usuario' %}"
                class="text-sm font-semibold text-slate-300 transition hover:text-white">Registro</a>
             <!-- Login -->
             <a href="{% url 'usuarios:login' %}"
-               class="text-sm font-semibold text-slate-300 transition hover:text-white">Login</a>
+               class="text-sm font-semibold text-slate-300 transition hover:text-white">Iniciar sesión</a>
           {% endif %}
           <!-- Agregar película -->
           <a href="{% url 'peliculas:agregar_pelicula' %}"
@@ -44,7 +44,8 @@
     {% if messages %}
       <div class="mx-auto w-9/10 max-w-300 pt-6">
         {% for message in messages %}
-          <div class=" rounded-lg px-4 py-3 {% if message.tags == 'success' %} border border-green-500/30 bg-green-500/10 text-green-400 {% elif message.tags == 'error' %} border border-red-500/30 bg-red-500/10 text-red-400 {% elif message.tags == 'warning' %} border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 {% elif message.tags == 'info' %} border border-blue-500/30 bg-blue-500/10 text-blue-400 {% endif %} ">
+          <div id="mensaje"
+               class=" rounded-lg px-4 py-3 opacity-0 transition duration-1000 {% if message.tags == 'success' %} border border-green-500/30 bg-green-500/10 text-green-400 {% elif message.tags == 'error' %} border border-red-500/30 bg-red-500/10 text-red-400 {% elif message.tags == 'warning' %} border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 {% elif message.tags == 'info' %} border border-blue-500/30 bg-blue-500/10 text-blue-400 {% endif %} ">
             {{ message }}
           </div>
         {% endfor %}
@@ -58,5 +59,6 @@
         <p>© Aldo Sandoval Zepeda. Todos los derechos reservados.</p>
       </div>
     </footer>
+    <script src="{% static 'peliculas/js/mensajes.js' %}"></script>
   </body>
 </html>

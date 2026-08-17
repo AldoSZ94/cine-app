@@ -1,20 +1,23 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
+
 from .forms import PeliculaForm
 from .models import Pelicula
 
 
+@login_required
 def lista_peliculas(request):
     hay_busqueda = False
     pelicula_buscada = request.GET.get("pelicula_buscada")
-    print("Buscando:", pelicula_buscada)
     if pelicula_buscada:
-        peliculas = Pelicula.objects.filter(titulo__icontains=pelicula_buscada)
+        peliculas = Pelicula.objects.filter(
+            usuario=request.user, titulo__icontains=pelicula_buscada
+        )
         hay_busqueda = True
     else:
-        peliculas = Pelicula.objects.all()
+        peliculas = Pelicula.objects.filter(usuario=request.user)
     paginator = Paginator(peliculas, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -30,9 +33,9 @@ def detalle_pelicula(request, pk):
     return render(request, "peliculas/detalle_pelicula.html", {"pelicula": pelicula})
 
 
-@login_required()
+@login_required
 def editar_pelicula(request, pk):
-    pelicula = get_object_or_404(Pelicula, pk=pk)
+    pelicula = get_object_or_404(Pelicula, pk=pk, usuario=request.user)
     datos = {
         "titulo": "Editar Película",
         "subtitulo": "Modifica la información de la película del catálogo.",
@@ -41,22 +44,31 @@ def editar_pelicula(request, pk):
         form = PeliculaForm(request.POST, request.FILES, instance=pelicula)
         if form.is_valid():
             form.save()
+            messages.success(
+                request,
+                f'Película "{pelicula.titulo}" actualizada correctamente.',
+            )
             return redirect("peliculas:lista_peliculas")
     else:
         form = PeliculaForm(instance=pelicula)
     return render(request, "peliculas/formulario.html", {"form": form, "datos": datos})
 
 
-@login_required()
+@login_required
 def eliminar_pelicula(request, pk):
-    pelicula = get_object_or_404(Pelicula, pk=pk)
+    pelicula = get_object_or_404(Pelicula, pk=pk, usuario=request.user)
     if request.method == "POST":
+        titulo = pelicula.titulo
         pelicula.delete()
+        messages.success(
+            request,
+            f'Película "{titulo}" eliminada correctamente.',
+        )
         return redirect("peliculas:lista_peliculas")
     return render(request, "peliculas/eliminar_pelicula.html", {"pelicula": pelicula})
 
 
-@login_required()
+@login_required
 def agregar_pelicula(request):
     datos = {
         "titulo": "Agregar Película",
@@ -64,13 +76,16 @@ def agregar_pelicula(request):
     }
     if request.method == "POST":
         form = PeliculaForm(request.POST, request.FILES)
+        print(form.errors)
         if form.is_valid():
-            form.save()
+            pelicula = form.save(commit=False)
+            pelicula.usuario = request.user
+            pelicula.save()
             messages.success(
                 request,
                 f'Película "{form.cleaned_data["titulo"]}" agregada al catálogo.',
             )
             return redirect("peliculas:lista_peliculas")
     else:
-        form = PeliculaForm
+        form = PeliculaForm()
     return render(request, "peliculas/formulario.html", {"form": form, "datos": datos})

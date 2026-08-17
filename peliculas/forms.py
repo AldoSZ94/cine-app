@@ -5,7 +5,16 @@ from .models import Pelicula
 class PeliculaForm(forms.ModelForm):
     class Meta:
         model = Pelicula
-        fields = "__all__"
+        fields = [
+            "titulo",
+            "director",
+            "sinopsis",
+            "duracion",
+            "clasificacion",
+            "genero",
+            "fecha_estreno",
+            "imagen",
+        ]
         widgets = {
             "titulo": forms.TextInput(
                 attrs={
